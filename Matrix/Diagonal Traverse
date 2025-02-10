@@ -1,0 +1,41 @@
+/*
+Approach:
+1.Use a HashMap where the key is (i + j) and the value is a list of elements in that diagonal.
+2.Traverse the matrix, storing each element in the corresponding diagonal list.
+3.Extract and process the diagonals, reversing the order for every alternate diagonal.
+*/
+
+//code
+class Solution {
+    public int[] findDiagonalOrder(int[][] mat) {
+        int m=mat.length,n=mat[0].length;
+        HashMap<Integer,List<Integer>>mpp= new HashMap<>();
+        List<Integer> res=new ArrayList<>();
+        //fill the map using (i+j) as key
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(!mpp.containsKey(i+j)){
+                    mpp.put(i+j,new ArrayList<>());
+                }
+                mpp.get(i+j).add(mat[i][j]);
+            }
+        }
+        //extract key and sort
+        List<Integer>keys=new ArrayList<>(mpp.keySet());
+        Collections.sort(keys);
+        //process diagonal
+        boolean flip=true;
+        for(int key:keys){
+            List<Integer>diagonal=mpp.get(key);
+            if(flip)Collections.reverse(diagonal);
+            res.addAll(diagonal);
+            flip=!flip;
+        }
+        int[] output=new int[res.size()];
+        for(int i=0; i<res.size();i++){
+           output[i] = res.get(i);
+        }
+        return output;
+
+    }
+}
